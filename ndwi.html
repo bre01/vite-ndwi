@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ndwi</title>
+</head>
+<body>
+    <div>
+       this is a litte project that let you upload b3 and b5
+       band of a landsat 8 image and calculate the ndwi index 
+    </div>
+    <div id="files">
+        <input type="file" id="b3" name="b3">
+        <input type="file" id="b5" name="b5">
+        <button id="btn">ok </button>
+        <input type="range" id="range">choose ndwi(0~1)</input>
+    </div>
+    
+    <script src="/node_modules/tiff.js/tiff.min.js" ></script>
+    <script src="/node_modules/d3/dist/d3.min.js" ></script>
+    <script src="/src/ndwi.ts" ></script>
+</body>
+</html>
