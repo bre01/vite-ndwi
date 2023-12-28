@@ -1,4 +1,6 @@
 //import {fileToCanvas} from "./FileToCanvas.ts";
+import {calculate_histogram,modify_by} from "pkg";
+
 const filesDiv: HTMLDivElement = document.getElementById('files') as HTMLDivElement;
 const b3Input = document.querySelector('#b3') as HTMLInputElement;
 const b5Input = document.querySelector('#b5') as HTMLInputElement;
@@ -38,6 +40,8 @@ button.onclick = async (e) => {
     waterCanvas.style.width = "35%";
     waterCanvas.id = "water";
     document.body.appendChild(waterCanvas);
+    console.log(calculate_histogram(ndwiCanvas.getContext('2d')!.getImageData(0, 0, ndwiCanvas.width, ndwiCanvas.height).data));
+    console.log(calculate_histogram([0.1,0.2] as Float64Array));
     //generateHistogram(ndwiCanvas)
 
 
@@ -53,7 +57,7 @@ button.onclick = async (e) => {
 Tiff.initialize({ TOTAL_MEMORY: 19777216 * 10 });
 
 
-generateHistogram = (canvas: HTMLCanvasElement) => {
+const generateHistogram = (canvas: HTMLCanvasElement) => {
     var image=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
     var imageData = [];
     for(let i=0;i<image.length;i+=4){   
@@ -124,6 +128,9 @@ const fileToCanvas = (file: File): Promise<HTMLCanvasElement> => {
         reader.readAsArrayBuffer(file);
     })
 }
+
+
+
 const water = (ndwiCanvas: HTMLCanvasElement, threshold = 20) => {
     const ndwiContext = ndwiCanvas.getContext('2d')!.getImageData(0, 0, ndwiCanvas.width, ndwiCanvas.height);
     const waterCanvas = document.createElement('canvas');
@@ -149,9 +156,10 @@ const water = (ndwiCanvas: HTMLCanvasElement, threshold = 20) => {
     }
     waterContext.putImageData(waterData, 0, 0)
     return waterCanvas;
-
-
-
+}
+const waterRust = (ndwiCanvas: HTMLCanvasElement,threshold=0.2) => {
+    //const 
+    
 }
 
 
