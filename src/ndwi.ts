@@ -12,7 +12,7 @@ const openingInput=document.querySelector("#opening") as HTMLInputElement;
 openingInput.onchange=((e)=>{
     const openingNumber=parseInt(openingInput.value);  
     const waterCanvas=document.getElementById('water') as HTMLCanvasElement;
-    const newWaterCanvas=cloneCanvas(
+    //const newWaterCanvas=cloneCanvas
 
 })
 
