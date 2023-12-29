@@ -2,6 +2,7 @@
 //import {fileToCanvas} from "./FileToCanvas.ts";
 import histogram from "../utils/histogram.ts";
 import cloneCanvas from "../utils/cloneCanvas.ts";
+import "tiff.js";
 
 const filesDiv: HTMLDivElement = document.getElementById('files') as HTMLDivElement;
 const b3Input = document.querySelector('#b3') as HTMLInputElement;
@@ -114,6 +115,10 @@ const fileToCanvas = (file: File): Promise<HTMLCanvasElement> => {
             resolve(canvas);
         }
         reader.readAsArrayBuffer(file);
+    }, (error) => {
+        reject(error);
+        alert("change other data");
+        
     })
 }
 
