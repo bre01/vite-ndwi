@@ -1,21 +1,32 @@
 //import {fileToCanvas} from "./FileToCanvas.ts";
-import {calculate_histogram,modify_by} from "pkg";
+
+import histogram from "../utils/histogram.ts";
+import cloneCanvas from "../utils/cloneCanvas.ts";
 
 const filesDiv: HTMLDivElement = document.getElementById('files') as HTMLDivElement;
 const b3Input = document.querySelector('#b3') as HTMLInputElement;
 const b5Input = document.querySelector('#b5') as HTMLInputElement;
 const button = document.querySelector("#btn") as HTMLButtonElement;
 const rangeInput = document.querySelector("#range") as HTMLInputElement;
+const openingInput=document.querySelector("#opening") as HTMLInputElement;
+openingInput.onchange=((e)=>{
+    const openingNumber=parseInt(openingInput.value);  
+    const waterCanvas=document.getElementById('water') as HTMLCanvasElement;
+    const newWaterCanvas=cloneCanvas(
+
+})
 
 rangeInput.onchange = ((e) => {
     const threshold = parseInt(rangeInput.value);
     const waterCanvas = document.getElementById('water') as HTMLCanvasElement;
     const ndwiCanvas = document.getElementById('ndwi') as HTMLCanvasElement;
-    const newWaterCanvas = water(ndwiCanvas, threshold);
+    const newWaterCanvas = water(ndwiCanvas, threshold*2.55);
     newWaterCanvas.style.width = "35%";
     document.body.replaceChild(newWaterCanvas, waterCanvas);
     newWaterCanvas.id = "water";
 })
+
+
 
 
 
@@ -37,12 +48,43 @@ button.onclick = async (e) => {
     ndwiCanvas.style.width = "20%";
     document.body.appendChild(ndwiCanvas);
     const waterCanvas = water(ndwiCanvas);
-    waterCanvas.style.width = "35%";
-    waterCanvas.id = "water";
     document.body.appendChild(waterCanvas);
-    console.log(calculate_histogram(ndwiCanvas.getContext('2d')!.getImageData(0, 0, ndwiCanvas.width, ndwiCanvas.height).data));
-    console.log(calculate_histogram([0.1,0.2] as Float64Array));
+    const histogramCanvas = histogram(data.data);
+    //const copyhistogramCanvas = JSON.parse(JSON.stringify(histogramCanvas)) as HTMLCanvasElement;
+    const copyhistogramCanvas =cloneCanvas(histogramCanvas)
+    copyhistogramCanvas.id = "histogram";
+    const histogramOnClick=(e:MouseEvent)=>{
+        const newhistogramCanvas=cloneCanvas(histogramCanvas)
+        const x=e.offsetX;
+        const y=e.offsetY;
+        const ctx=newhistogramCanvas.getContext('2d')!;
+        ctx.beginPath();
+        ctx.moveTo(x,0);    
+        ctx.lineTo(x,150);
+        ctx.strokeStyle="red";
+        ctx.stroke();
+        newhistogramCanvas.id="histogram";
+        newhistogramCanvas.onclick=histogramOnClick;
+        (e.target!as HTMLCanvasElement).replaceWith(newhistogramCanvas);  
+        const threshold=x/20;
+        const ndwiCanvas=document.getElementById('ndwi') as HTMLCanvasElement;
+        const newWaterCanvas=water(ndwiCanvas,threshold*10);
+        const waterCanvas=document.getElementById('water') as HTMLCanvasElement;
+        waterCanvas.replaceWith(newWaterCanvas)
+    }
+    const openingOnChaneg=(e:Event)=>{
+        
+    }
+
+
+    
+    copyhistogramCanvas.onclick=histogramOnClick;
+    document.body.append(copyhistogramCanvas);
+    
+
+
     //generateHistogram(ndwiCanvas)
+
 
 
     /*
@@ -155,6 +197,8 @@ const water = (ndwiCanvas: HTMLCanvasElement, threshold = 20) => {
         }
     }
     waterContext.putImageData(waterData, 0, 0)
+    waterCanvas.id="water";
+    waterCanvas.style.width="35%";
     return waterCanvas;
 }
 const waterRust = (ndwiCanvas: HTMLCanvasElement,threshold=0.2) => {
