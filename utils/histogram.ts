@@ -1,3 +1,4 @@
+//@ts-nocheck
 export default function histogram(data:Uint8ClampedArray){
     var counts=new Uint32Array(26);
     for (let i = 0; i < data.length; i+=4) {

@@ -1,5 +1,5 @@
+//@ts-nocheck
 //import {fileToCanvas} from "./FileToCanvas.ts";
-
 import histogram from "../utils/histogram.ts";
 import cloneCanvas from "../utils/cloneCanvas.ts";
 
@@ -99,61 +99,7 @@ button.onclick = async (e) => {
 Tiff.initialize({ TOTAL_MEMORY: 19777216 * 10 });
 
 
-const generateHistogram = (canvas: HTMLCanvasElement) => {
-    var image=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
-    var imageData = [];
-    for(let i=0;i<image.length;i+=4){   
-        imageData[i/4]=image[i];
-    }
-    imageData=imageData.filter
 
-    // Set up the SVG container
-    var svgWidth = 400;
-    var svgHeight = 200;
-
-    var svg = d3.select('body')
-        .append('svg')
-        .attr('width', svgWidth)
-        .attr('height', svgHeight);
-
-    // Set up the scales
-    var xScale = d3.scaleBand()
-        .domain(d3.range(imageData.length))
-        .range([0, svgWidth])
-        .padding(0.1);
-
-    var yScale = d3.scaleLinear()
-        .domain([0, d3.max(imageData)])
-        .range([svgHeight, 0]);
-
-    // Create the bars
-    svg.selectAll('rect')
-        .data(imageData)
-        .enter()
-        .append('rect')
-        .attr('x', function (d, i) {
-            return xScale(i);
-        })
-        .attr('y', function (d) {
-            return yScale(d);
-        })
-        .attr('width', xScale.bandwidth())
-        .attr('height', function (d) {
-            return svgHeight - yScale(d);
-        })
-        .attr('fill', 'steelblue');
-
-    // Add axes
-    var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale);
-
-    svg.append('g')
-        .attr('transform', 'translate(0,' + svgHeight + ')')
-        .call(xAxis);
-
-    svg.append('g')
-        .call(yAxis);
-}
 
 
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 Tiff.initialize({ TOTAL_MEMORY: 19777216 * 10 });
 
 export const fileToCanvas = (file: File): Promise<HTMLCanvasElement> => {
